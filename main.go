@@ -1,26 +1,26 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net"
 	"os"
 )
 
-const (
-	host     = "localhost"
-	port     = "6969"
-	connType = "tcp"
-)
-
 func main() {
-	l, err := net.Listen(connType, host+":"+port)
+	port := flag.String("port", "6969", "a string")
+	host := flag.String("host", "localhost", "a string")
+	connType := flag.String("conn", "tcp", "a string")
+	flag.Parse()
+
+	l, err := net.Listen(*connType, *host+":"+(*port))
 	if err != nil {
 		fmt.Println("Error listening:", err.Error())
 		os.Exit(1)
 	}
 	defer l.Close()
 
-	fmt.Println("Listening on " + host + ":" + port)
+	fmt.Println("Listening on " + *host + ":" + *port)
 
 	for {
 
